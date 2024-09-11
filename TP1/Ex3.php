@@ -11,7 +11,8 @@
     <?php
     $file = fopen('restos.csv', 'r');
     
-    while (($line = fgets($file)) !== false) {
+    while (!feof($file)) {
+        $line = fgets($file);
         $data = explode(';', $line);
     
         $nom = ($data[0]);
