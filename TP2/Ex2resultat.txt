@@ -4,4 +4,6 @@ Nom : Oui | Age : 12 | Mail : non@gmail.com | Don : 5 |
 Nom : Non | Age : 99 | Mail : email@gmail.com | Don : 8888 | 
 Nom : Non | Age : 99 | Mail : email@gmail.com | Don : 8888 | 
 Nom : Non | Age : 99 | Mail : email@gmail.com | Don : 8888 | 
-Nom : NOm | Age : 55 | Mail : mail@gmail.com | Don : 69 | 
+Nom : Oui | Age : 55 | Mail : a@g | Don : 6 | 
+Nom : Oui | Age : 88 | Mail : non@gmail.com | Don : 5 | 
+Nom : Jules | Age : 18 | Mail : cookies.n.glory@gmail.com | Don : 5 | 
