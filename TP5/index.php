@@ -9,21 +9,6 @@
 
 <body>
     <?php
-    /*
-     Ecrire un script PHP qui va lire le fichier config.ini, et, en fonction de la valeur du champs NB et du nom des
-     champs dans la section [NOMS], va générer le formulaire correspondant et permettant la saisie de ces 4 champs.
-     Il aura pour nom le contenu de la section NOMFIC avec l’extension .html (ici : Form1.html)
-     Voici le fichier :
-     [NOMFIC]
-     Filename=Form1
-     [NB]
-     Nb=4
-     [NOMS]
-     Nom=default
-     Prenom=default
-     Age=default
-     Ville=default
-     */
     $monFichier = fopen("config.ini", "r");
     $tabNouvellesValeurs = [];
 
@@ -53,12 +38,13 @@
         $pageHtml = "<input id='{$val}' placeholder='Entrez votre : {$val}'> <br>";
         fwrite($open, $pageHtml);
     }
+    $pageHtml = '<button type="submit">Valider</button> <br>';
+    fwrite($open, $pageHtml);
+    $pageHtml = '</form>';
+    fwrite($open, $pageHtml);
 
     fclose($open);
-
     ?>
-
-
 </body>
 
 </html>
