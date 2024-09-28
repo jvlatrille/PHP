@@ -9,41 +9,68 @@
 
 <body>
     <?php
-    $monFichier = fopen("config.ini", "r");
-    $tabNouvellesValeurs = [];
 
-    while (!(feof($monFichier))) {
-        $ligne = fgets($monFichier, 255);
+    /* Question 1 */
+    $fichierConfig = fopen("config.ini", "r");
+    $valeursConfig = [];
+
+    // Récupération des lignes du fichier config.ini
+    while (!feof($fichierConfig)) {
+        $ligne = fgets($fichierConfig, 255);
         if ($ligne[0] != '[') {
-            array_push($tabNouvellesValeurs, $ligne);
-            echo $ligne . "<br>";
+            array_push($valeursConfig, $ligne);
         }
     }
-    fclose($monFichier);
+    fclose($fichierConfig); // Toujours fermer le fichier
+    
 
-    $newFile = $tabNouvellesValeurs[0];
-    $newFile = trim($newFile) . '.html';
-    echo $newFile . '<br>';
+    // Nom du fichier PHP à générer
+    $nomFichierPhp = trim($valeursConfig[0]) . '.php';
+    $nombreChamps = (int) $valeursConfig[1];
 
-    $nombreDonnees = (int) $tabNouvellesValeurs[1];
-    echo $nombreDonnees . '<br>';
+    // Création du fichier HTML avec le formulaire
+    $fichierHtml = fopen(trim($valeursConfig[0]) . '.html', 'w+');
+    $formulaireHtml = "<form id='idForm' action='$nomFichierPhp' method='POST'> <br>";
+    fwrite($fichierHtml, $formulaireHtml);
 
-
-    $open = fopen($newFile, 'w+');
-
-    $pageHtml = '<form id="idForm"> <br>';
-    fwrite($open, $pageHtml);
-    for ($i = 0; $i < $nombreDonnees; $i++) {
-        $val = $tabNouvellesValeurs[$i + 2];
-        $pageHtml = "<input id='{$val}' placeholder='Entrez votre : {$val}'> <br>";
-        fwrite($open, $pageHtml);
+    // Boucle pour générer les champs du formulaire
+    for ($i = 0; $i < $nombreChamps; $i++) {
+        $nomChamp = trim($valeursConfig[$i + 2]);
+        $formulaireHtml = "<input name='{$nomChamp}' id='{$nomChamp}' placeholder='Entrez votre : {$nomChamp}'> <br>";
+        fwrite($fichierHtml, $formulaireHtml);
     }
-    $pageHtml = '<button type="submit">Valider</button> <br>';
-    fwrite($open, $pageHtml);
-    $pageHtml = '</form>';
-    fwrite($open, $pageHtml);
 
-    fclose($open);
+    // Bouton de validation du formulaire
+    $formulaireHtml = '<button type="submit">Valider</button> <br>';
+    fwrite($fichierHtml, $formulaireHtml);
+    $formulaireHtml = '</form>';
+    fwrite($fichierHtml, $formulaireHtml);
+
+    fclose($fichierHtml); // Toujours fermer le fichier
+    
+    
+    /* Question 2 */
+
+    // Génération du fichier PHP pour traiter les données du formulaire
+    $fichierPhp = fopen($nomFichierPhp, 'w+');
+    $contenuPhp = "<?php\n";
+    $contenuPhp .= "if (\$_SERVER['REQUEST_METHOD'] == 'POST') {\n";
+
+    // Boucle pour récupérer et afficher les valeurs des champs du formulaire
+    for ($i = 0; $i < $nombreChamps; $i++) {
+        $nomChamp = trim($valeursConfig[$i + 2]);
+        $contenuPhp .= "    \$${nomChamp} = isset(\$_POST['${nomChamp}']) ? htmlspecialchars(\$_POST['${nomChamp}']) : 'Non renseigné';\n";
+        $contenuPhp .= "    echo '${nomChamp}: ' . \$${nomChamp} . '<br>';\n";
+    }
+
+    // Gestion des erreurs si aucune donnée n'a été soumise
+    $contenuPhp .= "} else {\n";
+    $contenuPhp .= "    echo 'Aucune donnée soumise.';\n";
+    $contenuPhp .= "}\n";
+    $contenuPhp .= "?>";
+
+    fwrite($fichierPhp, $contenuPhp); // Écriture du contenu PHP
+    fclose($fichierPhp); // Toujours fermer le fichier
     ?>
 </body>
 
