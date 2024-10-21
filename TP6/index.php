@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($suggestions as $suggestion) {
             echo $suggestion . "<br />";
         }
-    } 
-    
+    }
+
     // Bonus parce que chez le daron on s'emmerde (du coup ici je vais documenter)
     else {
         echo "<h3>Aucun pays trouvé pour : " . htmlspecialchars($villeRecherchee) . "</h3>"; // Afficher ville pas trouvée
